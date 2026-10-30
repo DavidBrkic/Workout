@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a141b">
+<title>HOME / Phone Controller</title>
+<style>
+:root{--bg:#081116;--panel:#14232c;--panel2:#1c3039;--line:#334b52;--text:#f2faf8;--muted:#9fb5ba;--lime:#b9ef71}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#0b1920,#071116 58%);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);-webkit-tap-highlight-color:transparent}
+main{max-width:540px;margin:0 auto;padding:22px 15px max(30px,env(safe-area-inset-bottom))}.brand{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;border-bottom:1px solid var(--line);padding-bottom:18px}.mark{font-size:18px;font-weight:900;letter-spacing:.1em}.mark span{color:var(--lime)}.eyebrow{font-size:11px;letter-spacing:.16em;color:var(--lime);font-weight:850}.status{font-size:12px;color:var(--lime);padding:7px 0;min-height:28px}
+.box{background:linear-gradient(160deg,#19313a,#10212b);border:1px solid var(--line);border-radius:20px;padding:22px 20px;margin-bottom:14px}h1{font-size:43px;line-height:1.05;margin:18px 0;letter-spacing:-.05em;overflow-wrap:anywhere}h2{font-size:13px;letter-spacing:.09em;color:#ccd9db;margin:0 0 15px;text-transform:uppercase}.hint{color:#b5c7c9;font-size:14px;line-height:1.55;margin:13px 0}.progress{display:flex;justify-content:space-between;color:var(--muted);gap:12px;font-size:13px;margin-top:17px}
+button{border:0;border-radius:12px;min-height:53px;font-weight:800;font-size:15px;color:#fff;background:#2a424d;cursor:pointer;touch-action:manipulation}button:active{transform:scale(.97);filter:brightness(1.08)}button.main{background:var(--lime);color:#152016;font-size:20px;min-height:81px;display:block;width:100%}button.small{font-size:13px;min-height:46px}button.secondary{background:#203842;border:1px solid #425b65}button.ghost{background:transparent;border:1px solid #425560;color:#bed0d1}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:11px}.grid.thirds{grid-template-columns:1fr 1fr 1fr}.fields{display:grid;grid-template-columns:.85fr 1.15fr;gap:12px;margin-bottom:18px}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:9px;font-weight:750}.field input{width:100%;min-width:0;min-height:54px;border-radius:10px;border:1px solid #44616a;background:#0a1b22;color:#fff;font:700 17px system-ui;padding:10px}.rep-step{display:grid;grid-template-columns:45px 1fr 45px;gap:5px}.rep-step button{min-height:54px}.timer{font-size:53px;color:var(--lime);letter-spacing:-.05em;font-weight:800;font-variant-numeric:tabular-nums;margin:6px 0 17px}.footer{text-align:center;color:#78949b;font-size:11px;line-height:1.6;margin:20px 0}
+.auth{position:fixed;inset:0;z-index:20;background:#071116ed;display:none;align-items:center;justify-content:center;padding:14px;overflow:auto}.auth-card{max-width:430px;width:100%;background:#162a33;border:1px solid #47606a;border-radius:20px;padding:25px}.auth-card h2{font-size:20px;letter-spacing:0;color:white}.auth-card input{display:block;width:100%;padding:14px;margin:12px 0;border:1px solid #54666e;background:#081820;color:#fff;border-radius:10px;font:inherit}.auth-card button{width:100%}.auth-card p{color:#b6c9ca;font-size:14px;line-height:1.6}
+@media(max-width:390px){h1{font-size:35px}.box{padding:18px 15px}.fields{grid-template-columns:1fr}.grid.thirds button{font-size:12px}}
+</style>
+</head>
+<body data-role="phone">
+<main>
+  <header class="brand"><div class="mark">HOME<span>/</span> PHONE</div><div class="eyebrow">TRAINING STUDIO</div></header>
+  <div id="sync-status" class="status" role="status">CONNECTING…</div>
+  <section class="box">
+    <div class="eyebrow" id="phone-day">WORKOUT A</div>
+    <h1 id="phone-title">Waiting for TV…</h1>
+    <div class="hint" id="phone-tool">Sign in on both screens.</div>
+    <div class="hint" id="phone-tip"></div>
+    <div class="progress"><strong id="phone-set">0 / 0 sets</strong><strong id="phone-progress">0% complete</strong></div>
+  </section>
+  <section class="box">
+    <h2>Current set</h2>
+    <div class="fields">
+      <div class="field"><label for="phone-reps">REPETITIONS / SECONDS</label><div class="rep-step"><button id="phone-less" aria-label="Decrease reps">−</button><input type="number" id="phone-reps" min="1" max="100" value="12" inputmode="numeric"><button id="phone-more" aria-label="Increase reps">+</button></div></div>
+      <div class="field"><label for="phone-resistance">BAND / RESISTANCE</label><input type="text" id="phone-resistance" maxlength="50" placeholder="e.g. 2 × 15 kg"></div>
+    </div>
+    <button id="phone-log" class="main">✓ COMPLETE SET</button>
+    <div class="grid" style="margin-top:10px"><button id="phone-prev" class="secondary">← PREVIOUS</button><button id="phone-next" class="secondary">NEXT →</button></div>
+    <button id="phone-undo" class="ghost" style="width:100%;min-height:44px">Undo last set</button>
+  </section>
+  <section class="box"><h2>Rest timer</h2><div id="phone-timer" class="timer">01:15</div><div class="grid"><button id="phone-rest" class="secondary">Start / pause</button><button id="phone-reset" class="ghost">Reset</button></div></section>
+  <section class="box"><h2>Workout day</h2><div class="grid thirds"><button id="phone-day-a" class="secondary">DAY A</button><button id="phone-day-b" class="secondary">DAY B</button><button id="phone-day-c" class="secondary">DAY C</button></div><div class="hint">Switch days only before logging sets in the current workout.</div><button id="phone-finish" class="secondary" style="width:100%;margin-top:8px">Finish &amp; save workout</button></section>
+  <div class="footer"><div id="account-email"></div><button id="sync-logout" class="ghost small" style="margin-top:10px;min-height:35px;padding:4px 16px">Sign out</button><p>The TV stores your workout history. The phone sends controls securely through your Firebase account.</p></div>
+</main>
+<div id="auth-screen" class="auth" role="dialog" aria-modal="true" aria-label="Connect phone to training studio"><div class="auth-card"><div class="eyebrow">PHONE / PAIRING</div><h2>Connect to your training studio</h2><p id="auth-message">Sign in with the same account used on the TV.</p><form id="sync-login"><input id="sync-email" type="email" autocomplete="username" placeholder="Email address" required><input id="sync-password" type="password" autocomplete="current-password" placeholder="Password" required><button type="submit" class="main">CONNECT PHONE</button></form><p>Your email and password are sent directly to Firebase Authentication. We do not put them in GitHub.</p></div></div>
+<script src="firebase-config.js"></script><script src="sync.js"></script>
+</body>
+</html>
