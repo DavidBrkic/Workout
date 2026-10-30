@@ -22,17 +22,42 @@ header > *, .brand > *, .topright > *, .hero-bottom > *, .hero-buttons > *, .inf
 .app{min-width:0}
 @media (min-width:1101px){.hero h1{font-size:5.4vw;max-width:800px}.count{font-size:5vw}}
 @media (max-width:620px){.hero h1{font-size:50px}.desc{font-size:15px}.count{font-size:48px}}
+
+/* TV remote shortcuts: opt-in so the normal browser navigation remains available. */
+.remote-panel{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 21px;margin-top:18px;background:#13282d;border:1px solid #35544b;border-radius:14px}
+.remote-panel strong{color:var(--accent);font-size:13px;letter-spacing:.07em}
+.remote-panel .remote-help{font-size:13px;color:#d4e4e4;line-height:1.8;flex:1}
+.remote-panel .remote-secondary{color:#9ab4ba;font-size:12px}
+.remote-panel .btn{min-height:45px}
+.remote-active .remote-panel{background:#203b32;border-color:var(--accent);box-shadow:0 0 0 1px #b6ef6633}
+.remote-active #remote-mode{background:var(--accent);color:#16231a}
+.remote-panel .remote-label{padding:5px 9px;border-radius:6px;background:#263d42;font-weight:800;white-space:nowrap;color:white}
+.remote-active .remote-panel .remote-label{background:#345d45}
+.toast{position:fixed;right:18px;bottom:18px;z-index:9;padding:14px 20px;border:1px solid #658a60;border-radius:11px;background:#1b3328;color:#e4ffb9;font-size:14px;font-weight:750;box-shadow:0 8px 32px #0009;pointer-events:none;opacity:0;transition:opacity .2s}
+.toast.show{opacity:1}
+@media(max-width:620px){.remote-panel{padding:12px}.remote-panel .remote-help{flex-basis:100%}}
 </style>
 </head>
 <body><div class="app" id="app">
-<header><div class="brand"><div class="mark">H/</div><div><div class="name">HOME / TRAINING STUDIO</div><div class="sub">SAMSUNG TV EDITION · JAAFIT DASHBOARD</div></div></div><div class="topright"><div class="tag">● TV READY</div><div id="clock" class="clock"><small>LOCAL TIME</small>--:--</div></div></header>
+<header><div class="brand"><div class="mark">H/</div><div><div class="name">HOME / TRAINING STUDIO</div><div class="sub">SAMSUNG TV EDITION · REMOTE SHORTCUTS</div></div></div><div class="topright"><div class="tag">● TV READY</div><div id="clock" class="clock"><small>LOCAL TIME</small>--:--</div></div></header>
 <div class="main"><section class="panel hero"><div class="eyebrow" id="workout-eyebrow">WORKOUT A · FULL BODY</div><h1 id="current-title">Chest Press</h1><div class="desc" id="current-desc">Use a controlled tempo, with smooth repetitions.</div><div class="info" id="current-chips"></div><div class="hero-bottom"><div class="fraction">SET PROGRESS<strong id="set-count">0 / 3</strong></div><div class="hero-buttons"><button class="btn outline" id="prev" title="Previous exercise">← PREVIOUS</button><button class="btn primary" id="log-main" title="Log a set (Space)">✓ LOG SET</button><button class="btn" id="next" title="Next exercise (N)">NEXT →</button></div></div></section>
 <aside class="panel side"><div class="heading"><h2>YOUR SESSION</h2><span class="dim" id="session-label">6 EXERCISES</span></div><div class="daytabs"><button class="day active" data-day="0">DAY A</button><button class="day" data-day="1">DAY B</button><button class="day" data-day="2">DAY C</button></div><div class="heading"><span class="dim" id="focus-label">Upper body emphasis</span><span class="dim" id="session-progress">0% COMPLETE</span></div><div class="timeline" id="exercises"></div><button class="btn outline" id="finish" style="width:100%;margin-top:auto">FINISH & SAVE WORKOUT</button></aside></div>
+
+<div class="remote-panel" id="remote-panel">
+  <strong>CONTROL THE WORKOUT</strong>
+  <button id="remote-mode" class="btn sm outline" type="button" aria-pressed="false">ACTIVATE TV REMOTE SHORTCUTS</button>
+  <span class="remote-help" id="remote-help">Turn this on to control sets with the Samsung remote instead of selecting small buttons.</span>
+  <button class="btn sm" type="button" id="rep-minus" title="Fewer reps">− REP</button>
+  <span class="remote-label" id="remote-reps">12 reps</span>
+  <button class="btn sm" type="button" id="rep-plus" title="More reps">+ REP</button>
+  <button class="btn sm outline" type="button" id="undo-set">↶ UNDO SET</button>
+</div>
 <div class="lower"><section class="panel module"><div class="heading"><h2>REST TIMER</h2><span id="rest-state" class="status">READY</span></div><div class="count rest" id="rest-time">01:15</div><div class="controls"><button class="btn sm primary" id="rest-toggle">START REST</button><button class="btn sm" id="rest-reset">RESET</button><select class="muted-button" id="rest-length" aria-label="Rest duration"><option value="45">45 SEC</option><option value="60">60 SEC</option><option value="75" selected>75 SEC</option><option value="90">90 SEC</option><option value="120">120 SEC</option></select></div></section>
 <section class="panel module"><div class="heading"><h2>LOG THIS SET</h2><span class="dim">PROGRESSION</span></div><div class="log-fields"><div class="field"><label for="rep-input">ACTUAL REPS</label><input type="number" min="0" max="100" id="rep-input" value="12" /></div><div class="field"><label for="band-input">BANDS / RESISTANCE</label><input id="band-input" maxlength="50" placeholder="e.g. 2 × 15 kg" /></div></div><p class="control-note" id="log-note">Save each set to track your improvement.</p></section>
 <section class="panel module"><div class="heading"><h2>YOUR MOMENTUM</h2><span class="dim" id="week-label">THIS WEEK</span></div><div class="metrics"><div><span class="metric-big" id="week-total">0</span><span class="metric-label"> / 3 workouts<br>this week</span></div><div><span class="metric-big" id="elapsed">00:00</span><span class="metric-label"> elapsed<br>today</span></div></div><div class="weekgrid" id="weekgrid"></div></section></div>
 <div class="bottom"><div>DESIGNED FOR YOUR JAAFIT PRO + POWERPRESS ROUTINE · TRAIN WITH CONTROLLED TECHNIQUE</div><div class="smallactions"><button class="muted-button" id="scenery">◐ AMBIENT MODE</button><button class="muted-button" id="sound">♪ SOUND OFF</button><button class="muted-button" id="export">↓ EXPORT DATA</button><button class="muted-button" id="fullscreen">⛶ FULLSCREEN</button></div><div>SHORTCUTS: <span class="kbd">SPACE</span> LOG SET · <span class="kbd">N</span> NEXT · <span class="kbd">P</span> REST · <span class="kbd">F</span> FULLSCREEN</div></div>
 </div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 <script>
 'use strict';
 const workouts=[
@@ -62,6 +87,7 @@ const workouts=[
 const storeKey='home-training-studio-v1';
 function initial(){return {day:0,exercise:0,logs:{},history:[],sessionStart:null,restLength:75,ambient:false,sound:false,resistance:{},lastReps:{}}}
 function load(){try{const s=JSON.parse(localStorage.getItem(storeKey));return s&&typeof s==='object'?{...initial(),...s}:initial()}catch{return initial()}}
+let remoteMode=false,toastTimeout=null;
 let state=load(),restRemaining=state.restLength,restEnd=0,restRunning=false,sessionLive=true;
 const $=id=>document.getElementById(id);
 const safeText=s=>String(s == null ? '' : s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -87,7 +113,20 @@ function render(){const w=workouts[state.day],x=active(),p=progress(),n=logsFor(
  $('log-note').textContent=n>=x.sets?'Target sets completed. You can still log another set.':`Set ${n+1} of ${x.sets} · Save reps and band combination.`;
  $('log-main').textContent=n>=x.sets?'✓ EXTRA SET':'✓ LOG SET';
  $('app').classList.toggle('ambient',Boolean(state.ambient));$('scenery').textContent=state.ambient?'◑ STANDARD MODE':'◐ AMBIENT MODE';$('sound').textContent=state.sound?'♪ SOUND ON':'♪ SOUND OFF';
- $('rest-length').value=String(state.restLength);renderWeek();renderTimer()}
+ $('rest-length').value=String(state.restLength);renderWeek();renderTimer();renderRemote()}
+function renderRemote(){
+ $('app').classList.toggle('remote-active',remoteMode);
+ $('remote-mode').textContent=remoteMode?'TV REMOTE: ON — SELECT TO DISABLE':'ACTIVATE TV REMOTE SHORTCUTS';
+ $('remote-mode').setAttribute('aria-pressed',String(remoteMode));
+ $('remote-help').textContent=remoteMode?'← / → EXERCISE     ↑ / ↓ REPS     ENTER LOG SET     • At first exercise, press ← again to leave shortcuts. Rest starts after logging.':'Turn this on for arrow / Enter shortcuts. Leave it off to use normal TV browser navigation.';
+ $('remote-reps').textContent=$('rep-input').value+' '+(active().id==='a-plank'?'sec':'reps');
+}
+function changeReps(delta){
+ const x=active(),next=Math.max(1,Math.min(100,(Number($('rep-input').value)||x.defaultReps)+delta));
+ $('rep-input').value=next;state.lastReps[x.id]=next;persist();renderRemote();
+}
+function toast(text){const el=$('toast');el.textContent=text;el.classList.add('show');if(toastTimeout)clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>el.classList.remove('show'),1800)}
+function undoSet(){const arr=logsFor(active().id);if(!arr.length){toast('Nothing to undo for this exercise');return}arr.pop();persist();resetRest();render();toast('Last set removed')}
 function startRest(){restRemaining=Math.max(0,restRemaining);restEnd=Date.now()+restRemaining*1000;restRunning=true;renderTimer()}
 function stopRest(){if(restRunning){restRemaining=Math.max(0,Math.ceil((restEnd-Date.now())/1000));restRunning=false;renderTimer()}}
 function resetRest(){restRemaining=state.restLength;restRunning=false;renderTimer()}
@@ -95,7 +134,7 @@ function toggleRest(){restRunning?stopRest():startRest()}
 function soundPing(){if(!state.sound)return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;const ctx=new Audio(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.frequency.value=660;gain.gain.setValueAtTime(.08,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.38);osc.start();osc.stop(ctx.currentTime+.4);osc.onended=()=>ctx.close()}catch{}}
 function logSet(){const x=active(),reps=Math.max(0,Math.min(100,Number($('rep-input').value)||0)),res=$('band-input').value.trim();if(!Number.isFinite(reps)||reps<=0){$('log-note').textContent='Enter the number of reps (or seconds for planks).';$('rep-input').focus();return}
  const set={reps,res,at:new Date().toISOString()};if(!state.sessionStart)state.sessionStart=Date.now();if(!Array.isArray(state.logs[x.id]))state.logs[x.id]=[];state.logs[x.id].push(set);state.resistance[x.id]=res;state.lastReps[x.id]=reps;persist();resetRest();startRest();render();
- if(logsFor(x.id).length===x.sets){$('log-note').textContent='Target complete! Rest, then select the next exercise.'}}
+ if(logsFor(x.id).length===x.sets){$('log-note').textContent='Target complete! Rest, then select the next exercise.'}toast('Set '+logsFor(x.id).length+' logged · '+reps+' reps')}
 function renderTimer(){let sec=restRemaining;if(restRunning){sec=Math.max(0,Math.ceil((restEnd-Date.now())/1000));if(sec===0){restRunning=false;restRemaining=0;soundPing()}}
  $('rest-time').textContent=fmtSec(sec);$('rest-state').textContent=restRunning?'COUNTING DOWN':sec===0?'REST FINISHED':'READY';$('rest-toggle').textContent=restRunning?'PAUSE REST':sec===0?'RESTART REST':sec===state.restLength?'START REST':'RESUME REST'}
 function monday(d){const z=new Date(d.getFullYear(),d.getMonth(),d.getDate());z.setDate(z.getDate()-((z.getDay()+6)%7));return z}
@@ -106,11 +145,45 @@ function finish(){const p=progress();if(p.done===0){alert('Log at least one set 
  state.history.push(session);for(const e of workouts[state.day].ex)delete state.logs[e.id];state.exercise=0;state.sessionStart=null;state.resistance={};state.lastReps={};persist();resetRest();render();alert(`Saved Workout ${session.day} — ${p.done} target sets. Nice work!`)}
 function exportData(){const payload={app:'HOME / Training Studio',version:1,exported:new Date().toISOString(),...state};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`workout-history-${dateKey(new Date())}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function fullscreen(){const root=document.documentElement;if(!document.fullscreenElement){(root.requestFullscreen ? root.requestFullscreen() : null)}else{(document.exitFullscreen ? document.exitFullscreen() : null)}}
+$('remote-mode').addEventListener('click',()=>{remoteMode=!remoteMode;renderRemote();if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();toast(remoteMode?'Remote shortcut mode enabled':'Normal browser navigation enabled')});
+$('rep-minus').addEventListener('click',()=>changeReps(-1));$('rep-plus').addEventListener('click',()=>changeReps(1));
+$('undo-set').addEventListener('click',undoSet);
+$('rep-input').addEventListener('input',renderRemote);
 $('prev').addEventListener('click',()=>setActive(state.exercise-1));$('next').addEventListener('click',()=>setActive(state.exercise+1));$('log-main').addEventListener('click',logSet);$('rest-toggle').addEventListener('click',toggleRest);$('rest-reset').addEventListener('click',resetRest);$('finish').addEventListener('click',finish);$('export').addEventListener('click',exportData);$('fullscreen').addEventListener('click',fullscreen);
 $('scenery').addEventListener('click',()=>{state.ambient=!state.ambient;persist();render()});$('sound').addEventListener('click',()=>{state.sound=!state.sound;persist();render()});
 $('rest-length').addEventListener('change',e=>{state.restLength=Number(e.target.value);persist();resetRest()});document.querySelectorAll('[data-day]').forEach(b=>b.addEventListener('click',()=>daySelect(Number(b.dataset.day))));
 $('band-input').addEventListener('change',()=>{state.resistance[active().id]=$('band-input').value;persist()});$('rep-input').addEventListener('change',()=>{state.lastReps[active().id]=$('rep-input').value;persist()});
-document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes((document.activeElement && document.activeElement.tagName))||e.metaKey||e.ctrlKey||e.altKey)return;if(e.code==='Space'){e.preventDefault();logSet()}if(e.key.toLowerCase()==='n')setActive(state.exercise+1);if(e.key.toLowerCase()==='p')toggleRest();if(e.key.toLowerCase()==='f')fullscreen();if(['1','2','3'].includes(e.key))daySelect(Number(e.key)-1)});
+document.addEventListener('keydown',e=>{
+ const focused=document.activeElement,editing=focused&&['INPUT','TEXTAREA','SELECT'].indexOf(focused.tagName)>=0;
+ if(editing||e.metaKey||e.ctrlKey||e.altKey)return;
+ const key=e.key||'',code=e.keyCode||0;
+ // Capturing keys avoids Enter also activating whichever button previously had focus.
+ if(remoteMode){
+  let action='';
+  if(key==='ArrowLeft'||key==='Left'||code===37)action='prev';
+  else if(key==='ArrowRight'||key==='Right'||code===39)action='next';
+  else if(key==='ArrowUp'||key==='Up'||code===38)action='repup';
+  else if(key==='ArrowDown'||key==='Down'||code===40)action='repdown';
+  else if(key==='Enter'||code===13)action='log';
+  if(action){
+   e.preventDefault();e.stopPropagation();
+   if(e.repeat&&action==='log')return;
+   if(action==='prev'){if(state.exercise===0){remoteMode=false;renderRemote();toast('Shortcuts OFF — normal browser navigation')}else setActive(state.exercise-1);}
+   if(action==='next'){if(state.exercise===workouts[state.day].ex.length-1){remoteMode=false;renderRemote();toast('Shortcuts OFF — finish your workout')}else setActive(state.exercise+1);}
+   if(action==='repup')changeReps(1);
+   if(action==='repdown')changeReps(-1);
+   if(action==='log')logSet();
+   return;
+  }
+ }
+ if(key===' '||e.code==='Space'||code===32){e.preventDefault();if(!e.repeat)logSet()}
+ if(key.toLowerCase()==='n')setActive(state.exercise+1);
+ if(key.toLowerCase()==='p')toggleRest();
+ if(key.toLowerCase()==='f')fullscreen();
+ if(key.toLowerCase()==='r'){remoteMode=!remoteMode;renderRemote()}
+ if(key.toLowerCase()==='z')undoSet();
+ if(['1','2','3'].indexOf(key)>=0)daySelect(Number(key)-1);
+},true);
 function tick(){const now=new Date();$('clock').innerHTML=`<small>${now.toLocaleDateString('en-DK',{weekday:'long',day:'numeric',month:'long'}).toUpperCase()}</small>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;$('elapsed').textContent=fmtSec(state.sessionStart?Math.round((Date.now()-state.sessionStart)/1000):0);renderTimer()}
 render();tick();setInterval(tick,500);
 </script></body></html>
