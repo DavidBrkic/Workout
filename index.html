@@ -48,11 +48,62 @@ header > *, .brand > *, .topright > *, .hero-bottom > *, .hero-buttons > *, .inf
 #remote-panel{display:none !important}
 .sync-strip{border:1px solid #3d6150;background:#152d29;padding:15px 20px;border-radius:14px;margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .sync-strip .sync-badge{color:#b6ef66;font-weight:850;font-size:15px}
-.auth{position:fixed;inset:0;background:#070d12eF;z-index:40;display:none;align-items:center;justify-content:center;padding:20px;overflow:auto}
+.auth{position:fixed;top:0;left:0;right:0;bottom:0;background:#070d12eF;z-index:40;display:none;align-items:center;justify-content:center;padding:20px;overflow:auto}
 .auth-card{background:#152831;border:1px solid #47636b;border-radius:20px;padding:28px;max-width:480px;width:100%}
 .auth-card h2{font-size:28px;margin:0 0 14px}.auth-card p{color:#bed0d2;line-height:1.5}
 .auth-card input{display:block;width:100%;padding:15px;margin:12px 0;border:1px solid #4f6970;background:#07171d;color:#fff;border-radius:9px;font-size:18px}
 .auth-card button{width:100%;margin-top:9px}.auth-card .muted-button{margin-top:14px}
+
+
+/* FITNESS CINEMA: a display-only layer, synchronized through the existing phone protocol.
+   The existing dashboard remains intact offscreen so its state, history and Firebase hooks survive. */
+body{overflow:hidden;background:#081321}
+#app{position:absolute;top:-12000px;left:0;width:100vw;visibility:hidden}
+#cinema{position:fixed;top:0;left:0;right:0;bottom:0;z-index:5;color:#f8fafc;overflow:hidden;background:#091525;font-family:Arial,Helvetica,sans-serif;letter-spacing:.005em}
+#cinema *{box-sizing:border-box}
+#cinema .scene{position:absolute;top:0;left:0;right:0;bottom:0;opacity:0;transition:opacity 1.5s ease}
+#cinema[data-scene="0"] .scene-alps,#cinema[data-scene="1"] .scene-space,#cinema[data-scene="2"] .scene-aurora{opacity:1}
+#cinema .scene svg{width:100%;height:100%;display:block}
+#cinema .scene-alps svg,#cinema .scene-space svg,#cinema .scene-aurora svg{animation:cinema-zoom 55s ease-in-out infinite alternate;transform-origin:center}
+@keyframes cinema-zoom{0%{transform:scale(1)}100%{transform:scale(1.075)}}
+#cinema .scene-space .orbit-glow{animation:pulse-light 9s ease-in-out infinite alternate}
+#cinema .scene-aurora .aurora-beam{animation:aurora-flow 12s ease-in-out infinite alternate;transform-origin:50% 0%}
+@keyframes pulse-light{0%{opacity:.5}100%{opacity:.95}}
+@keyframes aurora-flow{0%{opacity:.5;transform:skewX(-4deg)}100%{opacity:.88;transform:skewX(5deg)}}
+#cinema .scrim{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(90deg,rgba(3,9,20,.66) 0%,rgba(3,9,20,.17) 48%,rgba(3,9,20,.42) 100%),linear-gradient(0deg,rgba(2,8,15,.95) 0%,rgba(2,8,15,.12) 48%,rgba(2,8,15,.34) 100%)}
+#cinema .layout{position:absolute;top:0;left:0;right:0;bottom:0;padding:3.2vw 4.2vw 3vw;display:flex;flex-direction:column;justify-content:space-between}
+#cinema .topline{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+#cinema .brandmark{display:flex;align-items:center;gap:15px;font-size:1.4vw;font-weight:800;letter-spacing:.22em}
+#cinema .orb{width:35px;height:35px;border:2px solid #b5f28e;border-radius:100%;box-shadow:0 0 22px rgba(160,242,175,.35);position:relative}
+#cinema .orb:after{content:"";width:13px;height:13px;border-radius:50%;background:#b5f28e;position:absolute;top:9px;left:9px}
+#cinema .top-status{text-align:right;font-size:1vw;font-weight:700;letter-spacing:.12em;color:#dae6e7}
+#cinema .top-status span{display:block;color:#b5f28e;margin-bottom:9px}
+#cinema .hero-info{width:65%;margin-top:auto;margin-bottom:3.9vw}
+#cinema .eyecap{font-size:1.02vw;letter-spacing:.22em;text-transform:uppercase;font-weight:750;color:#bbf1b1;text-shadow:0 1px 15px #0118}
+#cinema .hero-title{font-size:6.2vw;font-weight:750;letter-spacing:-.05em;line-height:1.05;margin:1.2vw 0;word-break:normal;text-shadow:0 8px 34px rgba(0,0,0,.48)}
+#cinema .subtitle{font-size:1.4vw;line-height:1.55;color:#e1edeb;max-width:55vw;font-weight:400;text-shadow:0 4px 15px #000a}
+#cinema .statuspill{display:inline-block;border:1px solid #addbc37a;background:#082b30a9;border-radius:99px;padding:.65vw 1.1vw;margin-top:2vw;color:#d4f4db;font-size:1vw;letter-spacing:.08em}
+#cinema .rest-card{position:absolute;right:4vw;top:37%;width:27vw;text-align:center;border:1px solid rgba(220,246,247,.23);border-radius:18px;background:rgba(7,24,38,.52);padding:2.3vw 1.2vw;box-shadow:0 20px 60px #0003;backdrop-filter:blur(4px)}
+#cinema .rest-label{color:#c1eee0;font-size:1vw;letter-spacing:.17em;font-weight:800}
+#cinema .rest-number{font-size:5.1vw;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.045em;margin:.9vw 0;color:#fff}
+#cinema .rest-caption{color:#d5e7ea;font-size:1vw}
+#cinema .rest-line{height:5px;border-radius:100px;background:#ffffff3d;overflow:hidden;margin-top:1.7vw}
+#cinema .rest-fill{height:100%;width:100%;background:linear-gradient(90deg,#a9f2b3,#e9fff2);transition:width .4s linear}
+#cinema .footerline{border-top:1px solid rgba(255,255,255,.29);padding-top:1.3vw;display:flex;justify-content:space-between;gap:20px;align-items:center}
+#cinema .metric-title{font-size:.86vw;letter-spacing:.18em;color:#b5cbd1;font-weight:700}
+#cinema .metric-value{font-size:2vw;font-weight:700;margin-top:.4vw}
+#cinema .nextblock{max-width:39vw}
+#cinema .nextblock .metric-value{font-size:1.55vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cinema .footer-row{display:flex;gap:3vw;align-items:center}
+#cinema .thin-progress{height:4px;background:#ffffff38;position:absolute;bottom:0;left:0;width:100%;overflow:hidden}
+#cinema .thin-progress>div{height:100%;background:#b5f28e;transition:width .5s ease}
+#cinema .watch{font-variant-numeric:tabular-nums}
+#cinema.resting .hero-info{margin-bottom:3.9vw;width:52%}
+#cinema.resting .hero-title{font-size:4.9vw}
+#cinema.resting .subtitle{max-width:38vw}
+#cinema.resting .rest-card{border-color:rgba(181,242,142,.56);background:rgba(5,23,34,.76)}
+@media(max-width:700px){#cinema .brandmark{font-size:13px}#cinema .top-status{font-size:11px}#cinema .eyecap{font-size:12px}#cinema .hero-title{font-size:45px}#cinema .subtitle{font-size:13px}#cinema .statuspill{font-size:11px}#cinema .rest-label,#cinema .rest-caption{font-size:10px}#cinema .rest-number{font-size:35px}#cinema .metric-title{font-size:9px}#cinema .metric-value{font-size:16px}#cinema .nextblock .metric-value{font-size:14px}}
+@media(prefers-reduced-motion:reduce){#cinema .scene svg,#cinema .scene-space .orbit-glow,#cinema .scene-aurora .aurora-beam{animation:none}}
 </style>
 </head>
 <body data-role="tv"><div class="app" id="app">
@@ -81,6 +132,67 @@ header > *, .brand > *, .topright > *, .hero-bottom > *, .hero-buttons > *, .inf
 <section class="panel module"><div class="heading"><h2>YOUR MOMENTUM</h2><span class="dim" id="week-label">THIS WEEK</span></div><div class="metrics"><div><span class="metric-big" id="week-total">0</span><span class="metric-label"> / 3 workouts<br>this week</span></div><div><span class="metric-big" id="elapsed">00:00</span><span class="metric-label"> elapsed<br>today</span></div></div><div class="weekgrid" id="weekgrid"></div></section></div>
 <div class="bottom"><div>DESIGNED FOR YOUR JAAFIT PRO + POWERPRESS ROUTINE · TRAIN WITH CONTROLLED TECHNIQUE</div><div class="smallactions"><button class="muted-button" id="scenery">◐ AMBIENT MODE</button><button class="muted-button" id="sound">♪ SOUND OFF</button><button class="muted-button" id="export">↓ EXPORT DATA</button><button class="muted-button" id="fullscreen">⛶ FULLSCREEN</button></div><div>CONTROL YOUR WORKOUT FROM /phone.html · DATA SAVED LOCALLY ON TV</div></div>
 </div>
+
+<div id="cinema" data-scene="0" aria-label="Cinematic workout display">
+  <div class="scene scene-alps">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="alpsSky" x2="0" y2="1"><stop stop-color="#0a2546"/><stop offset=".38" stop-color="#38637c"/><stop offset=".72" stop-color="#d79b79"/><stop offset="1" stop-color="#f7bc79"/></linearGradient>
+        <linearGradient id="alpsWater" x2="0" y2="1"><stop stop-color="#395f70"/><stop offset=".55" stop-color="#102e45"/><stop offset="1" stop-color="#0c1d2c"/></linearGradient>
+        <radialGradient id="alpsSun"><stop stop-color="#fff5d4" stop-opacity=".95"/><stop offset=".24" stop-color="#fddda0" stop-opacity=".6"/><stop offset="1" stop-color="#fbc393" stop-opacity="0"/></radialGradient>
+        <linearGradient id="alpsPeak" x2="0" y2="1"><stop stop-color="#d7dfde"/><stop offset=".2" stop-color="#8aadb1"/><stop offset="1" stop-color="#31596a"/></linearGradient>
+      </defs>
+      <rect width="1600" height="900" fill="url(#alpsSky)"/>
+      <circle cx="1090" cy="350" r="370" fill="url(#alpsSun)"/><circle cx="1090" cy="350" r="71" fill="#f5d8ab" opacity=".85"/>
+      <path d="M0 535 L145 392 L270 478 L424 286 L604 491 L810 242 L1047 512 L1252 328 L1450 481 L1600 368 L1600 900 L0 900Z" fill="url(#alpsPeak)"/>
+      <path d="M302 432 L424 286 L490 385 L445 362 L411 370 L382 353Z M702 377 L810 242 L897 371 L823 331 L799 359 L772 343Z M1181 414 L1252 328 L1315 401 L1250 368 L1234 390Z" fill="#e4e9df" opacity=".8"/>
+      <path d="M0 592 L155 518 L310 558 L513 425 L704 577 L883 472 L1120 584 L1350 440 L1600 566 L1600 900 L0 900Z" fill="#203f55"/>
+      <rect y="604" width="1600" height="296" fill="url(#alpsWater)"/>
+      <path d="M0 622 Q400 602 800 624 T1600 618" fill="none" stroke="#f0c7a3" stroke-width="4" opacity=".52"/>
+      <path d="M530 653 Q1030 643 1500 650 M490 707 Q920 690 1400 700 M40 765 Q830 738 1500 761 M230 830 Q850 800 1450 813" fill="none" stroke="#dfb29a" stroke-width="3" opacity=".12"/>
+      <path d="M0 675 L110 651 L172 695 L221 666 L260 740 L320 750 L360 790 L290 900 L0 900Z" fill="#082331"/>
+      <path d="M1600 681 L1512 657 L1470 686 L1432 713 L1390 724 L1370 795 L1420 900 L1600 900Z" fill="#102839"/>
+      <g opacity=".54" stroke="#e1e1d8" stroke-width="2"><path d="M930 671h185 M740 722h260 M860 756h350 M560 800h490"/></g>
+    </svg>
+  </div>
+  <div class="scene scene-space">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><radialGradient id="spGlow"><stop stop-color="#527ad0" stop-opacity=".72"/><stop offset=".28" stop-color="#385d9d" stop-opacity=".32"/><stop offset="1" stop-color="#040f24" stop-opacity="0"/></radialGradient>
+      <radialGradient id="spPlanet" cx=".25" cy=".22"><stop stop-color="#a8e1e3"/><stop offset=".27" stop-color="#488bb9"/><stop offset=".64" stop-color="#193a68"/><stop offset="1" stop-color="#080e22"/></radialGradient>
+      <linearGradient id="spHorizon" x2="0" y2="1"><stop stop-color="#1b4a6b"/><stop offset="1" stop-color="#07101d"/></linearGradient>
+      </defs>
+      <rect width="1600" height="900" fill="#070f21"/><ellipse class="orbit-glow" cx="1080" cy="340" rx="680" ry="460" fill="url(#spGlow)"/>
+      <circle cx="530" cy="297" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1364" cy="150" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="266" cy="72" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="61" cy="441" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="564" cy="854" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="537" cy="846" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="285" cy="812" r="1.6" fill="#e8ffff" opacity="0.68"/><circle cx="479" cy="498" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="880" cy="653" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="708" cy="839" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="1135" cy="625" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1386" cy="746" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="600" cy="207" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="518" cy="380" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="1240" cy="286" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1182" cy="502" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="398" cy="718" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="150" cy="440" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="4" cy="736" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="460" cy="145" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="1308" cy="259" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1507" cy="257" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="1444" cy="874" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="1441" cy="617" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="433" cy="632" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="735" cy="597" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="604" cy="197" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="461" cy="171" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1317" cy="609" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="702" cy="660" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="259" cy="318" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="617" cy="275" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1069" cy="375" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="654" cy="342" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1146" cy="545" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1371" cy="212" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="770" cy="513" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="529" cy="435" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="870" cy="602" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="1582" cy="250" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="417" cy="656" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="78" cy="324" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="177" cy="70" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1338" cy="792" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="920" cy="492" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="125" cy="296" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="303" cy="53" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="320" cy="223" r="1.6" fill="#e8ffff" opacity="0.68"/><circle cx="1235" cy="397" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="711" cy="131" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="1005" cy="452" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="718" cy="547" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="100" cy="330" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="10" cy="254" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="980" cy="380" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="540" cy="821" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1471" cy="243" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="399" cy="587" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="1120" cy="53" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1093" cy="778" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="613" cy="152" r="1.6" fill="#e8ffff" opacity="0.68"/><circle cx="177" cy="381" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="342" cy="744" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1073" cy="733" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="683" cy="828" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1274" cy="853" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="224" cy="96" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="793" cy="482" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="308" cy="803" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="616" cy="3" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="565" cy="339" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="767" cy="426" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="838" cy="267" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1184" cy="549" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1569" cy="384" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="59" cy="586" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1025" cy="183" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="11" cy="603" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="165" cy="508" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1444" cy="763" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="1088" cy="22" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="1268" cy="157" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1537" cy="263" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="44" cy="622" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="647" cy="543" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1556" cy="348" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1074" cy="717" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1044" cy="758" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="755" cy="151" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="273" cy="697" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="1366" cy="290" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="1459" cy="136" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1221" cy="106" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1249" cy="752" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="729" cy="390" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="138" cy="879" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="692" cy="388" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1400" cy="335" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="1568" cy="489" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="53" cy="730" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="840" cy="493" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="512" cy="220" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1090" cy="332" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="883" cy="574" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="417" cy="644" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1343" cy="131" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1286" cy="217" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="32" cy="163" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="113" cy="236" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1350" cy="788" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="997" cy="873" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="110" cy="357" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="187" cy="723" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="863" cy="304" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="576" cy="825" r="2.2" fill="#e8ffff" opacity="0.68"/>
+      <circle cx="1120" cy="422" r="260" fill="url(#spPlanet)"/><path d="M875 320 Q1060 258 1351 348 M864 430 Q1080 375 1376 461 M914 536 Q1100 500 1299 574" fill="none" stroke="#d6e4e0" stroke-width="7" opacity=".12"/>
+      <ellipse cx="1120" cy="424" rx="392" ry="95" fill="none" stroke="#aedbff" stroke-width="25" opacity=".14" transform="rotate(-17 1120 424)"/>
+      <ellipse cx="1120" cy="425" rx="397" ry="99" fill="none" stroke="#deebf9" stroke-width="4" opacity=".42" transform="rotate(-17 1120 425)"/>
+      <path d="M0 770 Q420 640 800 800 T1600 775 L1600 900 L0 900Z" fill="url(#spHorizon)" opacity=".95"/>
+    </svg>
+  </div>
+  <div class="scene scene-aurora">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><linearGradient id="aurSky" x2="0" y2="1"><stop stop-color="#071827"/><stop offset=".56" stop-color="#1a3650"/><stop offset="1" stop-color="#0b1e31"/></linearGradient>
+      <linearGradient id="aurBeam"><stop stop-color="#46f4c9" stop-opacity="0"/><stop offset=".42" stop-color="#4be6cb" stop-opacity=".54"/><stop offset=".8" stop-color="#bb9af7" stop-opacity=".34"/><stop offset="1" stop-color="#b68cff" stop-opacity="0"/></linearGradient></defs>
+      <rect width="1600" height="900" fill="url(#aurSky)"/>
+      <g opacity=".75"><circle cx="530" cy="297" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1364" cy="150" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="266" cy="72" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="61" cy="441" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="564" cy="854" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="537" cy="846" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="285" cy="812" r="1.6" fill="#e8ffff" opacity="0.68"/><circle cx="479" cy="498" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="880" cy="653" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="708" cy="839" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="1135" cy="625" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1386" cy="746" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="600" cy="207" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="518" cy="380" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="1240" cy="286" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1182" cy="502" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="398" cy="718" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="150" cy="440" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="4" cy="736" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="460" cy="145" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="1308" cy="259" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1507" cy="257" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="1444" cy="874" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="1441" cy="617" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="433" cy="632" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="735" cy="597" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="604" cy="197" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="461" cy="171" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1317" cy="609" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="702" cy="660" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="259" cy="318" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="617" cy="275" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1069" cy="375" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="654" cy="342" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1146" cy="545" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1371" cy="212" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="770" cy="513" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="529" cy="435" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="870" cy="602" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="1582" cy="250" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="417" cy="656" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="78" cy="324" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="177" cy="70" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1338" cy="792" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="920" cy="492" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="125" cy="296" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="303" cy="53" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="320" cy="223" r="1.6" fill="#e8ffff" opacity="0.68"/><circle cx="1235" cy="397" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="711" cy="131" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="1005" cy="452" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="718" cy="547" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="100" cy="330" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="10" cy="254" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="980" cy="380" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="540" cy="821" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1471" cy="243" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="399" cy="587" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="1120" cy="53" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1093" cy="778" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="613" cy="152" r="1.6" fill="#e8ffff" opacity="0.68"/><circle cx="177" cy="381" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="342" cy="744" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1073" cy="733" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="683" cy="828" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1274" cy="853" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="224" cy="96" r="1.6" fill="#e8ffff" opacity="0.82"/><circle cx="793" cy="482" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="308" cy="803" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="616" cy="3" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="565" cy="339" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="767" cy="426" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="838" cy="267" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1184" cy="549" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1569" cy="384" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="59" cy="586" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1025" cy="183" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="11" cy="603" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="165" cy="508" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1444" cy="763" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="1088" cy="22" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="1268" cy="157" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1537" cy="263" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="44" cy="622" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="647" cy="543" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1556" cy="348" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1074" cy="717" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1044" cy="758" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="755" cy="151" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="273" cy="697" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="1366" cy="290" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="1459" cy="136" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1221" cy="106" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1249" cy="752" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="729" cy="390" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="138" cy="879" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="692" cy="388" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1400" cy="335" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="1568" cy="489" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="53" cy="730" r="2.2" fill="#e8ffff" opacity="0.82"/><circle cx="840" cy="493" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="512" cy="220" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="1090" cy="332" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="883" cy="574" r="1.6" fill="#e8ffff" opacity="0.32"/><circle cx="417" cy="644" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="1343" cy="131" r="1" fill="#e8ffff" opacity="0.82"/><circle cx="1286" cy="217" r="1.6" fill="#e8ffff" opacity="0.48"/><circle cx="32" cy="163" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="113" cy="236" r="2.2" fill="#e8ffff" opacity="0.48"/><circle cx="1350" cy="788" r="2.2" fill="#e8ffff" opacity="0.32"/><circle cx="997" cy="873" r="1" fill="#e8ffff" opacity="0.32"/><circle cx="110" cy="357" r="1" fill="#e8ffff" opacity="0.48"/><circle cx="187" cy="723" r="2.2" fill="#e8ffff" opacity="0.68"/><circle cx="863" cy="304" r="1" fill="#e8ffff" opacity="0.68"/><circle cx="576" cy="825" r="2.2" fill="#e8ffff" opacity="0.68"/></g>
+      <path class="aurora-beam" d="M490 -60 Q1030 100 1470 -20 Q1220 260 810 445 Q600 390 490 -60Z" fill="url(#aurBeam)"/>
+      <path class="aurora-beam" d="M760 -60 Q1130 105 1600 30 L1600 300 Q1200 390 850 260 Z" fill="#72d7b6" opacity=".19"/>
+      <circle cx="1235" cy="183" r="44" fill="#dcece9" opacity=".76"/>
+      <path d="M0 600 L120 498 L255 594 L410 443 L560 600 L700 494 L855 635 L1080 460 L1250 610 L1445 501 L1600 611 L1600 900 L0 900Z" fill="#0b2938"/>
+      <path d="M0 697 L170 617 L312 706 L514 611 L680 732 L880 646 L1050 730 L1300 591 L1600 739 L1600 900 L0 900Z" fill="#091927"/>
+      <path d="M0 835 Q360 754 780 828 T1600 786 L1600 900 L0 900Z" fill="#050e1a"/>
+    </svg>
+  </div>
+  <div class="scrim"></div>
+  <div class="layout">
+    <div class="topline"><div class="brandmark"><span class="orb"></span><span>FITNESS / CINEMA</span></div><div class="top-status"><span id="cinema-connected">● PHONE CONTROL READY</span><div id="cinema-clock" class="watch">--:--</div></div></div>
+    <div class="hero-info"><div class="eyecap" id="cinema-phase">YOUR SESSION · READY WHEN YOU ARE</div><h1 class="hero-title" id="cinema-title">Chest Press</h1><div class="subtitle" id="cinema-sub">Choose your workout on your phone, then start training.</div><div class="statuspill" id="cinema-pill">WORKOUT A · ALPINE DAWN</div></div>
+    <div class="rest-card"><div class="rest-label" id="cinema-rest-label">REST TIMER</div><div class="rest-number watch" id="cinema-rest">01:15</div><div class="rest-caption" id="cinema-rest-caption">Start or pause from your phone</div><div class="rest-line"><div class="rest-fill" id="cinema-rest-fill"></div></div></div>
+    <div class="footerline"><div class="footer-row"><div><div class="metric-title">SET PROGRESS</div><div class="metric-value watch" id="cinema-sets">0 / 3</div></div><div><div class="metric-title">WORKOUT</div><div class="metric-value watch" id="cinema-progress">0%</div></div><div><div class="metric-title">ELAPSED</div><div class="metric-value watch" id="cinema-elapsed">00:00</div></div></div><div class="nextblock"><div class="metric-title">UP NEXT</div><div class="metric-value" id="cinema-next">Bent-Over Row</div></div></div>
+  </div>
+  <div class="thin-progress"><div id="cinema-progressline"></div></div>
+</div>
+
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <div id="auth-screen" class="auth" role="dialog" aria-modal="true" aria-label="Connect TV to phone controller"><div class="auth-card"><div class="eyebrow">ONE-TIME TV SETUP</div><h2>Connect your phone controller</h2><p id="auth-message">Sign in using the same Firebase account on your TV and phone.</p><form id="sync-login"><input id="sync-email" type="email" autocomplete="username" placeholder="Email address" required><input id="sync-password" type="password" autocomplete="current-password" placeholder="Password" required><button class="btn primary" type="submit">CONNECT TV</button></form><button id="sync-offline" class="muted-button" type="button">CONTINUE OFFLINE (NO PHONE CONTROL)</button><p style="font-size:12px">Your existing workout history stays stored locally on this TV. Firebase is used to synchronize controls.</p></div></div>
 <script>
@@ -138,7 +250,7 @@ function render(){const w=workouts[state.day],x=active(),p=progress(),n=logsFor(
  $('log-note').textContent=n>=x.sets?'Target sets completed. You can still log another set.':`Set ${n+1} of ${x.sets} · Save reps and band combination.`;
  $('log-main').textContent=n>=x.sets?'✓ EXTRA SET':'✓ LOG SET';
  $('app').classList.toggle('ambient',Boolean(state.ambient));$('scenery').textContent=state.ambient?'◑ STANDARD MODE':'◐ AMBIENT MODE';$('sound').textContent=state.sound?'♪ SOUND ON':'♪ SOUND OFF';
- $('rest-length').value=String(state.restLength);renderWeek();renderTimer();renderRemote()}
+ $('rest-length').value=String(state.restLength);renderWeek();renderTimer();renderRemote();updateCinema()}
 function renderRemote(){
  $('app').classList.toggle('remote-active',remoteMode);
  $('remote-mode').textContent=remoteMode?'TV REMOTE: ON — SELECT TO DISABLE':'ACTIVATE TV REMOTE SHORTCUTS';
@@ -162,7 +274,7 @@ function logSet(){const x=active(),reps=Math.max(0,Math.min(100,Number($('rep-in
  const set={reps,res,at:new Date().toISOString()};if(!state.sessionStart)state.sessionStart=Date.now();if(!Array.isArray(state.logs[x.id]))state.logs[x.id]=[];state.logs[x.id].push(set);state.resistance[x.id]=res;state.lastReps[x.id]=reps;persist();resetRest();startRest();render();
  if(logsFor(x.id).length===x.sets){$('log-note').textContent='Target complete! Rest, then select the next exercise.'}toast('Set '+logsFor(x.id).length+' logged · '+reps+' reps')}
 function renderTimer(){let sec=restRemaining;if(restRunning){sec=Math.max(0,Math.ceil((restEnd-Date.now())/1000));if(sec===0){restRunning=false;restRemaining=0;soundPing()}}
- $('rest-time').textContent=fmtSec(sec);$('rest-state').textContent=restRunning?'COUNTING DOWN':sec===0?'REST FINISHED':'READY';$('rest-toggle').textContent=restRunning?'PAUSE REST':sec===0?'RESTART REST':sec===state.restLength?'START REST':'RESUME REST'}
+ $('rest-time').textContent=fmtSec(sec);$('rest-state').textContent=restRunning?'COUNTING DOWN':sec===0?'REST FINISHED':'READY';$('rest-toggle').textContent=restRunning?'PAUSE REST':sec===0?'RESTART REST':sec===state.restLength?'START REST':'RESUME REST';updateCinema()}
 function monday(d){const z=new Date(d.getFullYear(),d.getMonth(),d.getDate());z.setDate(z.getDate()-((z.getDay()+6)%7));return z}
 function renderWeek(){const mon=monday(new Date()),today=dateKey(new Date());let count=0,html='';const days=['M','T','W','T','F','S','S'];for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(d.getDate()+i);const key=dateKey(d),n=state.history.filter(h=>h.date===key).length;count+=n;html+=`<div class="daycell">${days[i]}<div class="daydot ${n?'hit':''}" ${key===today?'style="outline:1px solid #7899a4;outline-offset:2px"':''}>${n?'✓':'·'}</div></div>`}
  $('weekgrid').innerHTML=html;$('week-total').textContent=count;$('week-label').textContent=`${state.history.length} TOTAL SAVED`}
@@ -227,6 +339,30 @@ document.addEventListener('keydown',e=>{
  if(key.toLowerCase()==='z')undoSet();
  if(['1','2','3'].indexOf(key)>=0)daySelect(Number(key)-1);
 },true);
+function updateCinema(){
+ var scene=$('cinema');if(!scene)return;
+ var w=workouts[state.day], x=active(), p=progress(), n=logsFor(x.id).length;
+ var resting=restRunning;
+ var rem=resting?Math.max(0,Math.ceil((restEnd-Date.now())/1000)):restRemaining;
+ var title=$('cinema-title'),next=state.exercise+1<w.ex.length?w.ex[state.exercise+1].name:'Workout complete';
+ scene.setAttribute('data-scene',String(state.day));
+ scene.classList.toggle('resting',resting);
+ title.textContent=resting?'Take a moment.':x.name;
+ $('cinema-phase').textContent=resting?'RECOVER · BREATHE · RESET':w.title+' · WORKOUT '+w.name;
+ $('cinema-sub').textContent=resting?'Enjoy the view. Your next set starts when you are ready.':x.tool+'  ·  '+x.reps+'  ·  '+x.tip;
+ $('cinema-pill').textContent='WORKOUT '+w.name+'  ·  '+['ALPINE DAWN','ORBIT','NORTHERN LIGHTS'][state.day];
+ $('cinema-sets').textContent=Math.min(n,x.sets)+' / '+x.sets;
+ $('cinema-progress').textContent=Math.round(100*p.done/p.total)+'%';
+ $('cinema-elapsed').textContent=fmtSec(state.sessionStart?Math.round((Date.now()-state.sessionStart)/1000):0);
+ $('cinema-next').textContent=resting?x.name:next;
+ $('cinema-rest-label').textContent=resting?'REST IN PROGRESS':'REST TIMER';
+ $('cinema-rest').textContent=fmtSec(rem);
+ $('cinema-rest-caption').textContent=resting?'Ready when the countdown ends':rem===0?'Ready for your next set':'Start / pause from your phone';
+ $('cinema-rest-fill').style.width=(state.restLength?Math.max(0,Math.min(100,Math.round(100*rem/state.restLength))):0)+'%';
+ $('cinema-progressline').style.width=Math.max(0,Math.min(100,Math.round(100*p.done/p.total)))+'%';
+ var now=new Date();$('cinema-clock').textContent=now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+ var sync=$('sync-status');if(sync){var syncText=sync.textContent||'';var ok=syncText.indexOf('READY')>=0||syncText.indexOf('CONNECTED')>=0;$('cinema-connected').textContent=ok?'● PHONE CONNECTED':'● '+syncText.slice(0,42)}
+}
 function tick(){const now=new Date();$('clock').innerHTML=`<small>${now.toLocaleDateString('en-DK',{weekday:'long',day:'numeric',month:'long'}).toUpperCase()}</small>${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;$('elapsed').textContent=fmtSec(state.sessionStart?Math.round((Date.now()-state.sessionStart)/1000):0);renderTimer()}
 render();tick();setInterval(tick,500);
 </script><script src="firebase-config.js"></script><script src="sync.js"></script></body></html>
